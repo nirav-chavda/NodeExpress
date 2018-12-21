@@ -1,7 +1,15 @@
 var mongoose = require('mongoose');
+var validator = require('validator');
+var {createConnection,exitConnection} = require('../db/mongoose');
 
-var User = mongoose.model('users',{
-    name : {
+var userSchema = new mongoose.Schema({
+
+    first_name : {
+        type: String,
+        required: true,
+        trim: true
+    },
+    last_name : {
         type: String,
         required: true,
         trim: true
@@ -9,13 +17,59 @@ var User = mongoose.model('users',{
     email : {
         type: String,
         required: true,
-        trim: true
+        trim: true,
+        unique: true,
+        lowercase: true,
+        validate: (value) => {
+            return validator.isEmail(value)
+        }
     },
     password: {
         type: String,
-        required: true,
-        trim: true
+        required: true
+    },
+    created_at: {
+        type: Date
+    },
+    updated_at: {
+        type: Date
     }
 });
 
-module.exports = {User};
+userSchema.virtual('full_name').set(function(name) {
+    let str = name.split(' ');
+    this.first_name = str[0];
+    this.last_name = str[1];
+});
+
+userSchema.pre('save', function (next) {
+    let now = Date.now();
+    this.updated_at = now;
+    if (!this.createdAt) {
+        this.created_at = now;
+    }
+    next();    
+});
+
+userSchema.statics.create = function (user) { 
+    return new Promise((resolve,reject) => {
+        
+        createConnection();
+        
+        var newUser = new this({
+            full_name : user.full_name,
+            email : user.email,
+            password : user.password            
+        });
+        
+        newUser.save().then((doc)=> {
+            exitConnection();
+            resolve(doc);
+        },(err) => {
+            exitConnection();
+            reject(err);
+        });
+    });
+};
+
+module.exports = ('User', mongoose.model('users',userSchema));
