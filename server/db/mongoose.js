@@ -8,7 +8,7 @@ var createConnection = () => {
         .then(function () {
             var data = `${ new Date().toString() } : Mongodb Connection : ${process.env.DB_HOST} - ${process.env.DB}`;
             writeDBLog(data);
-            console.log("DB Started\n");
+            console.log(`Mongodb Connection : ${process.env.DB_HOST} - ${process.env.DB}`);
         })
         .catch(function (err) {
             var data = `${ new Date().toString() } : Mongodb Connection Error :\n ${err.stack}`;
@@ -22,7 +22,7 @@ var exitConnection = () => {
     mongoose.connection.close();
     var data = `${ new Date().toString() } : Mongodb Connection Closed`;
     writeDBLog(data);
-    console.log("\nConnection Closed");
+    console.log("MongoDB Connection Closed");
 };
 
 function writeDBLog(data) {

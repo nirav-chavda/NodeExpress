@@ -1,6 +1,9 @@
 var mongoose = require('mongoose');
 var validator = require('validator');
+var bcrypt = require('bcrypt');
 var {createConnection,exitConnection} = require('../db/mongoose');
+
+const salt = bcrypt.genSaltSync();
 
 var userSchema = new mongoose.Schema({
 
@@ -59,7 +62,7 @@ userSchema.statics.create = function (user) {
         var newUser = new this({
             full_name : user.full_name,
             email : user.email,
-            password : user.password            
+            password : bcrypt.hashSync(user.password, salt)            
         });
         
         newUser.save().then((doc)=> {
@@ -71,5 +74,15 @@ userSchema.statics.create = function (user) {
         });
     });
 };
+
+userSchema.statics.validatePassword = function (password) {
+    return new Promise((resolve,reject) => {
+        if(bcrypt.compareSync(password, this.password)) {
+            resolve(1);
+        } else {
+            reject(0);
+        }
+    });
+}
 
 module.exports = ('User', mongoose.model('users',userSchema));

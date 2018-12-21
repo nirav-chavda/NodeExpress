@@ -6,7 +6,7 @@ const path = require('path');
 const opn = require('opn');
 const morgan = require('morgan');
 const session = require('express-session');
-//const cookieParser = require('cookie-parser');
+const cookieParser = require('cookie-parser');
 
 require('dotenv').config();   // puts .env file variables into process.env
 
@@ -19,18 +19,21 @@ app.set('views',path.join(dirname,'/resources/views'));
 
 /* Middlewares */
 app.use(morgan('dev'));     // logger - http logs on console
-app.use(bodyParser.json()); 
 app.use(express.static(dirname+'/public'));
-app.use(require('./routes/routes'));
+app.use(cookieParser());
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
 app.use(session({
+    key: 'user_sid',
     secret : 'NodeLaravel',
     resave : false,
-    saveUninitialized : false,
+    saveUninitialized : true,
     cookie : {
-        secure: true,
+        //secure: true,
         maxAge: 1000*60*5   // 5 minutes
     }
 }));
+app.use(require('./routes/routes'));
 
 var server = app.listen(port, () => {
     var data = `${ new Date().toString() } : Server Started at ${server.address().address} : ${port}`;
