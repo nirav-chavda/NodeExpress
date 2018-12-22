@@ -75,9 +75,10 @@ userSchema.statics.create = function (user) {
     });
 };
 
-userSchema.statics.validatePassword = function (password) {
-    return new Promise((resolve,reject) => {
-        if(bcrypt.compareSync(password, this.password)) {
+userSchema.statics.validatePassword = function (user_password,password) {
+    //return bcrypt.compareSync(password, this.password);
+    return new Promise((resolve,reject) => {  
+        if(bcrypt.compareSync(password,user_password)) {
             resolve(1);
         } else {
             reject(0);

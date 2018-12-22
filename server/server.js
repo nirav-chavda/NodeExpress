@@ -33,7 +33,25 @@ app.use(session({
         maxAge: 1000*60*5   // 5 minutes
     }
 }));
+hbs.localsAsTemplateData(app);
+app.use((req,res,next) => {
+    if(req.session.user) {
+        app.locals.guest = 0;
+        app.locals.auth = 1;
+    } else {
+        app.locals.guest = 1;
+        app.locals.auth = 0;
+    }
+    next();
+});
 app.use(require('./routes/routes'));
+
+// hbs.registerHelper('guest',{
+//     if(Guest) { return 1 }    
+// });
+// hbs.registerHelper('auth',{
+//     if(Auth) { return 1 }    
+// });
 
 var server = app.listen(port, () => {
     var data = `${ new Date().toString() } : Server Started at ${server.address().address} : ${port}`;

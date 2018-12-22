@@ -12,20 +12,30 @@ exports.loginUser = (req,res) => {
     createConnection();
 
     User.findOne({email : email}).then((user) => {
-        exitConnection();
         if(!user) {
+            exitConnection();
             console.log('User not found');
             res.send(user);
-        } else {
-            User.validatePassword(password).then((yes) => {
+         } // else if (!User.validatePassword(password)) {
+        //     exitConnection();
+        //     console.log('Password mismatch');
+        //     //res.redirect('/login');
+        //     res.send(user);
+        // } else {
+        //     req.session.user = user._id;
+        //     res.redirect('/dashboard');
+        // }
+        else {
+            User.validatePassword(user.password,password).then((yes) => {
                 req.session.user = user._id;
-                res.redirect('/dashboard');
+                exitConnection();
+                res.redirect('/dashboard'); 
             },(no) => {
+                exitConnection();
                 console.log('Password mismatch');
-                //res.redirect('/login');
-                res.send(user);   
+                res.redirect('/login');   
             });
-        } 
+        }
     },(err) => {
         exitConnection();
         console.log(err.stack);
