@@ -1,1 +1,0 @@
-var canRunAds=!0;alert("Homepage");

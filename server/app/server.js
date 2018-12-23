@@ -10,14 +10,14 @@ const cookieParser = require('cookie-parser');
 
 require('dotenv').config();   // puts .env file variables into process.env
 
-var dirname = __dirname.replace('\\server','');
+var dirname = __dirname.replace('\\server\\app','');
 var port = process.env.PORT || 3000;
 var app = express();
 
 app.set('view engine','hbs');
 app.set('views',path.join(dirname,'/resources/views'));
 
-/* Middlewares */
+/* Middlewares */           // Do maintain the order
 app.use(morgan('dev'));     // logger - http logs on console
 app.use(express.static(dirname+'/public'));
 app.use(cookieParser());
@@ -44,14 +44,7 @@ app.use((req,res,next) => {
     }
     next();
 });
-app.use(require('./routes/routes'));
-
-// hbs.registerHelper('guest',{
-//     if(Guest) { return 1 }    
-// });
-// hbs.registerHelper('auth',{
-//     if(Auth) { return 1 }    
-// });
+app.use(require('../routes/routes'));
 
 var server = app.listen(port, () => {
     var data = `${ new Date().toString() } : Server Started at ${server.address().address} : ${port}`;

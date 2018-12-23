@@ -1,4 +1,4 @@
-var User = require('../../models/User');
+var User = require('../../db/models/User');
 
 exports.showRegisterForm = (req,res) => {
     res.render('auth/register',{});

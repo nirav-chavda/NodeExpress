@@ -1,4 +1,4 @@
-var User = require('../../models/User');
+var User = require('../../db/models/User');
 var {createConnection,exitConnection} = require('../../db/mongoose');
 
 exports.showLoginForm = (req,res) => {
@@ -16,16 +16,7 @@ exports.loginUser = (req,res) => {
             exitConnection();
             console.log('User not found');
             res.send(user);
-         } // else if (!User.validatePassword(password)) {
-        //     exitConnection();
-        //     console.log('Password mismatch');
-        //     //res.redirect('/login');
-        //     res.send(user);
-        // } else {
-        //     req.session.user = user._id;
-        //     res.redirect('/dashboard');
-        // }
-        else {
+         } else {
             User.validatePassword(user.password,password).then((yes) => {
                 req.session.user = user._id;
                 exitConnection();

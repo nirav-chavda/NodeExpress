@@ -1,7 +1,8 @@
 var mongoose = require('mongoose');
 var validator = require('validator');
 var bcrypt = require('bcrypt');
-var {createConnection,exitConnection} = require('../db/mongoose');
+// var autoIncrement = require("mongodb-autoincrement");
+var {createConnection,exitConnection} = require('../mongoose');
 
 const salt = bcrypt.genSaltSync();
 
@@ -76,7 +77,7 @@ userSchema.statics.create = function (user) {
 };
 
 userSchema.statics.validatePassword = function (user_password,password) {
-    //return bcrypt.compareSync(password, this.password);
+
     return new Promise((resolve,reject) => {  
         if(bcrypt.compareSync(password,user_password)) {
             resolve(1);
@@ -85,5 +86,4 @@ userSchema.statics.validatePassword = function (user_password,password) {
         }
     });
 }
-
 module.exports = ('User', mongoose.model('users',userSchema));
