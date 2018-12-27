@@ -1,2 +1,3 @@
 node_modules/
 logcat.log
+server/app/config/social-login.example.js

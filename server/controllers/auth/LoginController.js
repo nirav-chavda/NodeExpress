@@ -14,9 +14,10 @@ exports.loginUser = (req,res) => {
     User.findOne({email : email}).then((user) => {
         if(!user) {
             exitConnection();
+            req.session.message='Email does not match our records';
             console.log('User not found');
-            res.send(user);
-         } else {
+            res.redirect('/');
+        } else {
             User.validatePassword(user.password,password).then((yes) => {
                 req.session.user = user._id;
                 exitConnection();
@@ -24,7 +25,8 @@ exports.loginUser = (req,res) => {
             },(no) => {
                 exitConnection();
                 console.log('Password mismatch');
-                res.redirect('/login');   
+                req.session.message='Password does not match';
+                res.redirect('/');   
             });
         }
     },(err) => {
@@ -34,8 +36,15 @@ exports.loginUser = (req,res) => {
     });
 };
 
+exports.providerFail = (req,res) => {
+    req.session.message = `Login for ${req.params.provider} has failed !`;    
+    console.log(`Login for ${req.params.provider} has failed !`);
+    req.redirect('/');
+};
+
 exports.logoutUser = (req,res) => {
-    req.session.destroy();
+    req.session.user = "";
     res.clearCookie('user_sid');
+    req.session.message = `User Logged Out !`;
     res.redirect('/login');
 };
