@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-//const hbs = require('express-handlebars');
-const hbs = require('hbs');
+const hbs = require('express-handlebars');
+//const hbs = require('hbs');
 const fs = require('fs');
 const path = require('path');
 const opn = require('opn');
@@ -13,10 +13,15 @@ require('dotenv').config();   // puts .env file variables into process.env
 
 var dirname = __dirname.replace('\\server\\app','');
 var port = process.env.PORT || 3000;
-var app = express();
+var app = module.exports = express();
 
 app.set('views',path.join(dirname,'/resources/views'));
-//app.engine('hbs',hbs({extname:'hbs',defaultLayout:'home',layoutsDir: dirname+'/resources/views/layouts'}));
+app.engine('hbs',hbs({
+    extname:'hbs',
+    defaultLayout:'home',
+    helpers: require('../controllers/helpers/helpers'),
+    layoutsDir: dirname+'/resources/views/layouts'
+}));
 app.set('view engine','hbs');
 
 /* Middlewares */           // Do maintain the order
@@ -26,14 +31,14 @@ app.use(cookieParser());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(session(require('../app/config/session')));
-hbs.localsAsTemplateData(app);
+//hbs.localsAsTemplateData(app);
 app.use((req,res,next) => {
     if(req.session.user) {
-        app.locals.guest = 0;
-        app.locals.auth = 1;
+        res.locals.guest = 0;
+        res.locals.auth = 1;
     } else {
-        app.locals.guest = 1;
-        app.locals.auth = 0;
+        res.locals.guest = 1;
+        res.locals.auth = 0;
     }
     next();
 });
@@ -44,10 +49,8 @@ app.use((req,res,next)=>{
     } 
     next();   
 });
-//module.exports = app;
-require('../controllers/helpers/helpers')(hbs,app);
-// includes routes
-require('../routes/routes')(app);
+
+require('../routes/routes')(app);   // includes routes
 require('../app/config/social-login')(app);
 
 var server = app.listen(port, () => {

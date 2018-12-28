@@ -16,7 +16,7 @@ exports.loginUser = (req,res) => {
             exitConnection();
             req.session.message='Email does not match our records';
             console.log('User not found');
-            res.redirect('/');
+            res.redirect('/login');
         } else {
             User.validatePassword(user.password,password).then((yes) => {
                 req.session.user = user._id;
@@ -26,7 +26,7 @@ exports.loginUser = (req,res) => {
                 exitConnection();
                 console.log('Password mismatch');
                 req.session.message='Password does not match';
-                res.redirect('/');   
+                res.redirect('/login');   
             });
         }
     },(err) => {
@@ -39,7 +39,7 @@ exports.loginUser = (req,res) => {
 exports.providerFail = (req,res) => {
     req.session.message = `Login for ${req.params.provider} has failed !`;    
     console.log(`Login for ${req.params.provider} has failed !`);
-    req.redirect('/');
+    req.redirect('/login');
 };
 
 exports.logoutUser = (req,res) => {

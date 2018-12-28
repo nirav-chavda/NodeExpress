@@ -1,57 +1,47 @@
-<html>
-    <head>
-        <title>Homepage-WebApp</title>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-        {{!-- <link rel="stylesheet" href="css/bootstrap.min.css"> --}}
-        <link rel="icon" type="image/png" href="webapp.ico"/>
-    </head>
-<body class="container">
-    <div class="page-header">
-        <h1>Simple Auth-System</h1>
-    </div>
-    {{#if message}}
-        <h5>{{message}}</h5>
-    {{/if}}
-    <nav class="navbar navbar-default">
-        <div class="container-fluid">
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav">
-                    <li><a href="/">Home</a></li>
-                    {{#if auth}}
-                        <li><a href="/logout">Log Out</a></li>
-                        <li><a href="/dashboard">Dashboard</a></li>
-                    {{/if}}
-                </ul>
+<div class="page-header">
+    <h1>Simple Auth-System</h1>
+</div>
+{{#if message}}
+    <h5>{{message}}</h5>
+{{/if}}
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a href="/">Home</a></li>
+                {{#if auth}}
+                    <li><a href="/logout">Log Out</a></li>
+                    <li><a href="/dashboard">Dashboard</a></li>
+                {{/if}}
+            </ul>
 
-                <ul class="nav navbar-nav navbar-right">
-                    {{#if guest}}
-                        <li><a href="/login">Log In</a></li>
-                        <li><a href="/register">Sign Up</a></li>
-                        <li><a href="/auth/facebook"></a></li>
-                    {{/if}}
-                </ul>
-            </div><!-- /.navbar-collapse -->
-        </div><!-- /.container-fluid -->
-    </nav>
+            <ul class="nav navbar-nav navbar-right">
+                {{#if guest}}
+                    <li><a href="/login">Log In</a></li>
+                    <li><a href="/register">Sign Up</a></li>
+                    <li><a href="/auth/facebook"></a></li>
+                {{/if}}
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
 
-    <div class="container row">
-        <div class="jumbotron col-sm-4 pull-center">
-            <form action="/login" method="post">
-                <div>
-                    <label>Email:</label>
-                    <input type="email" name="email"/>
-                </div>
-                <div>
-                    <label>Password:</label>
-                    <input type="password" name="password"/>
-                </div>
-                <div>
-                    <input class="btn btn-primary" type="submit" value="Log In"/>
-                </div>
-                <a href="/auth/facebook">FACEBOOK</a>
-            </form>                  
-        </div>          
-    </div>
-</body>
-</html>
+<div class="container row">
+    <div class="jumbotron col-sm-4 pull-center">
+        <form action="/login" method="post">
+            <div>
+                <label>Email:</label>
+                <input type="email" name="email"/>
+            </div>
+            <div>
+                <label>Password:</label>
+                <input type="password" name="password"/>
+            </div>
+            <div>
+                <input class="btn btn-primary" type="submit" value="Log In"/>
+            </div>
+            <a href="/auth/facebook">FACEBOOK</a>
+        </form>                  
+    </div>          
+</div>
