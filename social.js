@@ -3,6 +3,9 @@ var app                 = express();
 var port = process.env.PORT || 3000; 
 // Setup express here...
 
+app.get('/',(req,res) => {
+    res.send('here');
+});
 
 // Setup social-login
 var socialLoginClass    = require("social-login");
@@ -16,14 +19,18 @@ var socialLogin			= new socialLoginClass({
         // This is the centralized method that is called when the user is logged in using any of the supported social site.
         // Setup once and you're done.
         
-        findOrCreate({
-            profile:	profile,        // Profile is the user's profile, already filtered to return only the parts that matter (no HTTP response code and that kind of useless data)
-            property:	uniqueProperty, // What property in the data is unique: id, ID, name, ...
-            type:		type            // What type of login that is: facebook, foursquare, google, ...
-        }, function(user) {
-            console.log(user);
-            done(null, user);   // Return the user and continue
-        });
+        // findOrCreate({
+        //     profile:	profile,        // Profile is the user's profile, already filtered to return only the parts that matter (no HTTP response code and that kind of useless data)
+        //     property:	uniqueProperty, // What property in the data is unique: id, ID, name, ...
+        //     type:		type            // What type of login that is: facebook, foursquare, google, ...
+        // }, function(user) {
+        //     console.log(user);
+        //     done(null, user);   // Return the user and continue
+        // });
+
+        console.log(profile);
+        done(null,user);
+        
     }
 });
 
