@@ -10,7 +10,7 @@ var socialLoginClass    = require("social-login");
 // Init
 var socialLogin			= new socialLoginClass({
     app:	app,    // ExpressJS instance
-    url:	'http://127.0.0.1:3000',  // Your root url
+    url:	'https://sleepy-ridge-56292.herokuapp.com/',  // Your root url
     onAuth:	function(req, type, uniqueProperty, accessToken, refreshToken, profile, done) {
         
         // This is the centralized method that is called when the user is logged in using any of the supported social site.
