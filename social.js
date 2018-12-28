@@ -46,7 +46,7 @@ socialLogin.use({
         },
         url:	{
             auth:		"/auth/facebook",           // The URL to use to login (<a href="/auth/facebook">Login with facebook</a>).
-            callback: 	"/auth/facebook/callback/",  // The Oauth callback url as specified in your facebook app's settings
+            callback: 	"/auth/facebook/callback",  // The Oauth callback url as specified in your facebook app's settings
             success:	'/',                        // Where to redirect the user once he's logged in
             fail:		'/auth/facebook/fail'       // Where to redirect the user if the login failed or was canceled.
         }
