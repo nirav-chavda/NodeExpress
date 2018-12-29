@@ -12,7 +12,7 @@
                 <li><a href="/">Home</a></li>
                 {{#if auth}}
                     <li><a href="/logout">Log Out</a></li>
-                    <li><a href="/dashboard">Dashboard</a></li>
+                    {{!-- <li><a href="/dashboard">Dashboard</a></li> --}}
                 {{/if}}
             </ul>
 
@@ -27,5 +27,5 @@
 </nav>
 
 <div class="container row">
-    <h1>Hi, Welcome to your Dashboard</h1>
+    <h1>Hi, Welcome to your Dashboard {{ user.first_name}} {{ user.last_name }}</h1>
 </div>

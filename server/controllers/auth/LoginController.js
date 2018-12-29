@@ -11,7 +11,7 @@ exports.loginUser = (req,res) => {
 
     createConnection();
 
-    User.findOne({email : email}).then((user) => {
+    User.findOne({email : email}).select('+password').then((user) => {
         if(!user) {
             exitConnection();
             req.session.message='Email does not match our records';

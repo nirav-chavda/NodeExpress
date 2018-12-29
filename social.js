@@ -42,7 +42,9 @@ socialLogin.use({
             clientSecret: 	process.env.FB_SECRET,
             authParameters:	{
                 scope: 'email'//'read_stream,manage_pages'
-            }
+            },
+            enableProof: false,
+            passReqToCallback : true,
         },
         url:	{
             auth:		"/auth/facebook",           // The URL to use to login (<a href="/auth/facebook">Login with facebook</a>).
@@ -66,6 +68,5 @@ app.get('/success',(req,res) => {
 }); 
 
 app.listen(port,() => {
-    console.log('server');
-    
+    console.log('server');  
 });
