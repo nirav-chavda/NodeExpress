@@ -40,18 +40,30 @@ socialLogin.use({
         settings:	{
             clientID: process.env.FB_ID,
             clientSecret: 	process.env.FB_SECRET,
-            // authParameters:	{
-            //     scope: 'read_stream,manage_pages'
-            // }
+            authParameters:	{
+                scope: 'email'//'read_stream,manage_pages'
+            }
         },
         url:	{
             auth:		"/auth/facebook",           // The URL to use to login (<a href="/auth/facebook">Login with facebook</a>).
             callback: 	"/auth/facebook/callback",  // The Oauth callback url as specified in your facebook app's settings
-            success:	'/',                        // Where to redirect the user once he's logged in
+            success:	'/success',                 // Where to redirect the user once he's logged in
             fail:		'/auth/facebook/fail'       // Where to redirect the user if the login failed or was canceled.
         }
     }
 });
+
+app.get('/auth/facebook/callback',(req,res) => {
+    res.send('fb callback');
+});
+
+app.get('/auth/facebook/fail',(req,res) => {
+    res.send('fb fail');
+}); 
+
+app.get('/success',(req,res) => {
+    res.send('fb success');
+}); 
 
 app.listen(port,() => {
     console.log('server');
