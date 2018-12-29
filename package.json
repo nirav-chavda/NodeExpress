@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start" : "gulp | node server/app/server.js"
+    "start": "gulp | node server/app/server.js"
   },
   "author": "Nirav Chavda",
   "license": "ISC",

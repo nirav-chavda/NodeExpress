@@ -61,6 +61,8 @@ var server = app.listen(port, () => {
         }
     });
     console.log(`Server Started at ${server.address().address} : ${port}`);
-    opn(`${process.env.HOST}`,{app: 'chrome'});
+    if(process.env.APP_ENV == "DEV") {
+        opn(`${process.env.HOST}`,{app: 'chrome'});
+    }
 });
 
