@@ -8,7 +8,7 @@ var Guest = (req, res, next) => {
 
 var Auth = (req, res, next) => {
     if (!req.session.user) {
-        res.redirect('back');
+        res.redirect('/login');
     } else {
         next();
     }    

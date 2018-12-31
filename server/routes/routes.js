@@ -56,6 +56,7 @@ module.exports = function(app) {
             }
         });
     });
+    app.get('/video',Auth,HomeController.streamVideo);
 
     app.use((req,res,next)=>{
         res.status(404).render('error_pages/404',{});
