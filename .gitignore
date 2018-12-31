@@ -2,3 +2,4 @@ node_modules/
 logcat.log
 server/app/config/social-login.js
 vendor/
+.env

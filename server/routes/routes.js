@@ -37,6 +37,25 @@ module.exports = function(app) {
     app.get('/logout',Auth,LoginController.logoutUser);
     app.get('/dashboard',Auth,HomeController.home);
     app.get('/auth/:provider/fail',Guest,LoginController.providerFail);
+    app.get('/sendMail',(req,res) => {
+        var mailOption = {
+            from : `Nirav Chavda <${process.env.MAIL_USER}>`,
+            to :    `niravdchavda@gmail.com`,
+            subject : 'Test' ,
+            text : 'Follow Me XD',
+            html : '<img src="https://i.ytimg.com/vi/S0ClJ9D1KsI/hqdefault.jpg" width="250" height="250"/><br/><a href="www.instagram.com/___nirav_">crappy coder</a>'
+        };
+
+        require('../app/config/mail').transporter.sendMail(mailOption,(err,info) => {
+            if(err) {
+                res.send(`Something went wrong : ${err}`);
+            }  else {
+                res.send(`Mail Sent . ${JSON.stringify(info,null,4)}`);            
+                var data = `Accepted : ${info.accepted}\n  Rejected : ${info.rejected}\n  MessageSize : ${info.messageSize}\n  Response : ${info.response}\n`;
+                fs.appendFile( dirname+'/logcat.log' , data , (error) => { if(error) { console.log(error) } });
+            }
+        });
+    });
 
     app.use((req,res,next)=>{
         res.status(404).render('error_pages/404',{});

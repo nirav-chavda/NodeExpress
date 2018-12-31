@@ -8,6 +8,8 @@ const opn = require('opn');
 const morgan = require('morgan');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
+const figlet = require('figlet');
+const colors = require('colors');
 
 require('dotenv').config();   // puts .env file variables into process.env
 
@@ -60,7 +62,20 @@ var server = app.listen(port, () => {
             return console.log('Error while writing log \n',err);
         }
     });
-    console.log(`Server Started at ${server.address().address} : ${port}`);
+
+    figlet.text(`Server  Started at ${server.address().address} : ${port}` , {
+        font: 'Standard',
+        horizontalLayout: 'fitted',
+        verticalLayout: 'fitted'
+    }, function(err, data) {
+        if (err) {
+            console.log('Something went wrong...');
+            console.dir(err);
+            return;
+        }
+        console.log(data.rainbow);
+    });
+
     if(process.env.APP_ENV == "DEV") {
         opn(`${process.env.HOST}`,{app: 'chrome'});
     }
