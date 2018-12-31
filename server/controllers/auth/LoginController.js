@@ -9,31 +9,35 @@ exports.loginUser = (req,res) => {
 
     var email = req.body.email , password = req.body.password;
 
-    createConnection();
-
-    User.findOne({email : email}).select('+password').then((user) => {
-        if(!user) {
+    createConnection().then(data => {
+        
+        User.findOne({email : email}).select('+password').then((user) => {
+            if(!user) {
+                exitConnection();
+                req.session.message='Email does not match our records';
+                res.redirect('/login');
+            } else {
+                User.validatePassword(user.password,password).then((yes) => {
+                    exitConnection();
+                    if(!user.is_verified) {
+                        req.session.message='Account is not verified';
+                        res.redirect('/login');
+                    }
+                    req.session.user = user._id;
+                    res.redirect('/dashboard'); 
+                },(no) => {
+                    exitConnection();
+                    req.session.message='Password does not match';
+                    res.redirect('/login');   
+                });
+            }
+        },(err) => {
             exitConnection();
-            req.session.message='Email does not match our records';
-            console.log('User not found');
-            res.redirect('/login');
-        } else {
-            User.validatePassword(user.password,password).then((yes) => {
-                req.session.user = user._id;
-                exitConnection();
-                res.redirect('/dashboard'); 
-            },(no) => {
-                exitConnection();
-                console.log('Password mismatch');
-                req.session.message='Password does not match';
-                res.redirect('/login');   
-            });
-        }
-    },(err) => {
-        exitConnection();
-        console.log(err.stack);
-        res.send(err.stack);
-    });
+            console.log(err.stack);
+            res.send(err.stack);
+        });
+        
+    }).catch(err => res.status(400).send(err));
 };
 
 exports.providerFail = (req,res) => {

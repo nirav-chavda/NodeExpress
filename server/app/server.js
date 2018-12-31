@@ -56,24 +56,14 @@ require('../routes/routes')(app);   // includes routes
 require('../app/config/social-login')(app);
 
 var server = app.listen(port, () => {
+
+    console.log(`Magic happens at ${server.address().address} : ${port}`);
+
     var data = `${ new Date().toString() } : Server Started at ${server.address().address} : ${port}`;
     fs.appendFile(dirname+'/logcat.log' , data+"\n" , (err) => {
         if(err) {
             return console.log('Error while writing log \n',err);
         }
-    });
-
-    figlet.text(`Server  Started at ${server.address().address} : ${port}` , {
-        font: 'Standard',
-        horizontalLayout: 'fitted',
-        verticalLayout: 'fitted'
-    }, function(err, data) {
-        if (err) {
-            console.log('Something went wrong...');
-            console.dir(err);
-            return;
-        }
-        console.log(data.rainbow);
     });
 
     if(process.env.APP_ENV == "DEV") {

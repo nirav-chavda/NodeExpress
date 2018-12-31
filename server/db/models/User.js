@@ -33,6 +33,10 @@ var userSchema = new mongoose.Schema({
         required: true,
         select: false
     },
+    is_verified: {
+        type:Boolean,
+        default: false
+    },
     created_at: {
         type: Date
     },
@@ -59,21 +63,23 @@ userSchema.pre('save', function (next) {
 userSchema.statics.create = function (user) { 
     return new Promise((resolve,reject) => {
         
-        createConnection();
-        
-        var newUser = new this({
-            full_name : user.full_name,
-            email : user.email,
-            password : bcrypt.hashSync(user.password, salt)            
-        });
-        
-        newUser.save().then((doc)=> {
-            exitConnection();
-            resolve(doc);
-        },(err) => {
-            exitConnection();
-            reject(err);
-        });
+        createConnection().then(data => {
+            
+            var newUser = new this({
+                full_name : user.full_name,
+                email : user.email,
+                password : bcrypt.hashSync(user.password, salt)            
+            });
+            
+            newUser.save().then((doc)=> {
+                exitConnection();
+                resolve(doc);
+            },(err) => {
+                exitConnection();
+                reject(err);
+            });
+
+        }).catch(err => reject(err));
     });
 };
 
@@ -87,4 +93,9 @@ userSchema.statics.validatePassword = function (user_password,password) {
         }
     });
 }
+
+// userSchema.methods.checkVerified = function (id) {
+//     this.update();    
+// }
+
 module.exports = ('User', mongoose.model('users',userSchema));
