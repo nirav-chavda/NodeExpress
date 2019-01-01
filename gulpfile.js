@@ -8,7 +8,7 @@ gulp.task('concatJS', () => {
     return new Promise( 
         (resolve,reject) => {
             writeLog(`${ new Date().toString() } : Gulp Task Started`);
-            gulp.src('resources/assets/js/*.js')
+            gulp.src(['resources/assets/js/*.js','public/js/app.js'])
             .pipe(concat('main.js'))
             .pipe(uglify())
             .pipe(gulp.dest('public'));

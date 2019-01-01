@@ -7,7 +7,7 @@ var schema = new mongoose.Schema({
         type: String,
         required: true
     },
-    userId : {
+    user_id : {
         type: ObjectId,
         required: true
     },
@@ -32,7 +32,7 @@ schema.statics.create = function (data) {
     return new Promise((resolve,reject) => {
 
         var newObj = new this({
-            userId : data.userId,
+            user_id : data.user_id,
             token : data.token            
         });
 

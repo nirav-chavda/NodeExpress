@@ -3,3 +3,4 @@ logcat.log
 server/app/config/social-login.js
 vendor/
 .env
+not-working.txt

@@ -13,6 +13,7 @@ module.exports = function(app) {
     var HomeController = require('../controllers/HomeController');
     var LoginController = require('../controllers/auth/LoginController');
     var RegisterController = require('../controllers/auth/RegisterController');
+    var ResetPasswordController = require('../controllers/auth/ResetPasswordController');
 
     var dirname = __dirname.replace('\\server\\routes','');
 
@@ -37,6 +38,11 @@ module.exports = function(app) {
     app.get('/auth/:provider/fail',Guest,LoginController.providerFail);
     app.get('/auth/account/verify/:token',Guest,RegisterController.markVerified);
     app.get('/video',Auth,HomeController.streamVideo);
+    app.get('/auth/reset/password',Guest,ResetPasswordController.showEmailForm);
+    app.post('/auth/reset/password',Guest,ResetPasswordController.checkAndMail);
+    app.get('/auth/reset/password/:token',Guest,ResetPasswordController.checkToken);
+    app.get('/auth/password/reset',Guest,ResetPasswordController.showPasswordForm);
+    app.post('/auth/password/reset',Guest,ResetPasswordController.reset);
 
     app.use((req,res,next)=>{
         res.status(404).render('error_pages/404',{});

@@ -5,6 +5,6 @@ module.exports = {
     saveUninitialized : true,
     cookie : {
         //secure: true,
-        maxAge: 1000*60*5   // 5 minutes
+        maxAge: 1000*60*10   // 10 minutes
     }
 };

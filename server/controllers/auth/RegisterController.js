@@ -1,7 +1,9 @@
+const fs = require('fs');
+
 var User = require('../../db/models/User');
 var AccountVerification = require('../../db/models/AccountVerification');
 var {createConnection,exitConnection} = require('../../db/mongoose');
-
+ 
 exports.showRegisterForm = (req,res) => {
     res.render('auth/register',{});
 };
@@ -36,12 +38,12 @@ exports.registerUser = (req,res) => {
             } else {
                 var dirname = __dirname.replace('\\server\\controllers\\auth','');            
                 var data = `Accepted : ${info.accepted}\n  Rejected : ${info.rejected}\n  MessageSize : ${info.messageSize}\n  Response : ${info.response}\n`;
-                fs.appendFile(dirname+'./logcat.log' , data , (error) => { if(error) { console.log(error) } });   
+                fs.appendFile(dirname+'/logcat.log' , data , (error) => { if(error) { console.log(error) } });   
             }
         });
 
         var accVerifyObject = {
-            'userId' : user_id,
+            'user_id' : user_id,
             'token' : token
         };
 
@@ -65,11 +67,11 @@ exports.markVerified = function(req,res) {
         
         AccountVerification.findOne({token:req.params.token}).then((doc) => {
             
-            user_id = doc.userId;
+            user_id = doc.user_id;
             
             User.findOneAndUpdate({_id:user_id},{is_verified:true},{new:true}).then((doc_user)=>{
                 
-                AccountVerification.findOneAndRemove({userId:user_id}).then((doc)=>{
+                AccountVerification.findOneAndRemove({user_id:user_id}).then((doc)=>{
                     exitConnection();
                     req.session.message = "Account Verified Successfully";
                     res.redirect('/login');
